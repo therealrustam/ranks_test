@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+        <script src="https://js.stripe.com/v3/"></script>
+        <title>Buy {{ item.name }}</title>
+    </head>
+    <body>
+        <section class="section">
+            <div class="container">
+                <p>
+                    Name:  {{ item.name }}
+                </p>
+                <br>
+                <p>
+                    Description:  {{ item.description }}
+                </p>
+                <br>
+                <p>
+                    Price: {{ item.price }} $
+                </p>
+                <br>
+                <button id="buy-button">Buy</button>
+                <script type="text/javascript">
+      var stripe = Stripe('pk_test_51L05XxHjkc2r11YwC1WVCAcNlCcSo1FPyArLqMT64kLdtc9uV1Foc0OJbe6t7RAqy3TAJuOD4KIFowNQGo25YWte00dlUM8Qne');
+      var buyButton = document.getElementById('buy-button');
+      buyButton.addEventListener('click', function() {
+        fetch('/buy/{{item.id}}/', {method: 'GET'})
+        .then(response => response.json())
+        .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+      });
+                </script>
+            </div>
+        </section>
+    </body>
+</html>
