@@ -1,3 +1,7 @@
+"""
+Админ-зона для добавления/редактирования/удаления объектов.
+"""
+
 from django.contrib import admin
 
 from .models import Item

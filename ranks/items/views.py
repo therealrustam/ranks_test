@@ -1,3 +1,7 @@
+"""
+Функции обработки запросов.
+"""
+
 import stripe
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -10,6 +14,10 @@ stripe.api_key = 'sk_test_51L05XxHjkc2r11YwYZk3iEjtVLNbob59E9LmkF88AQK8hYjprMpyr
 
 
 def buy_item(request, buy_id):
+    """
+    Метод создания Session_id, необходимого
+    для перевода на страницу оплаты Stripe через скрипт JS.
+    """
     item = get_object_or_404(Item, id=buy_id)
     checkout_session = stripe.checkout.Session.create(
         success_url='http://127.0.0.1:8000/success/',
@@ -29,6 +37,10 @@ def buy_item(request, buy_id):
 
 
 def get_item(request, item_id):
+    """
+    Метод перевода на страницу товаров, на которой
+    указаны описания товара и кнопка для покупки.
+    """
     item = get_object_or_404(Item, id=item_id)
     context = {
         'item': item,
@@ -37,8 +49,16 @@ def get_item(request, item_id):
 
 
 class SuccessView(TemplateView):
+    """
+    Вью-класс для перевода на страницу
+    при успешном выполнении оплаты.
+    """
     template_name = 'success.html'
 
 
 class CancelledView(TemplateView):
+    """
+    Вью-класс для перевода на страницу
+    при неуспешной оплате или ошибке.
+    """
     template_name = 'cancelled.html'
